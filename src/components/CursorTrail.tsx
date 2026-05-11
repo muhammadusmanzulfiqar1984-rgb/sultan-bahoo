@@ -40,7 +40,7 @@ export function CursorTrail() {
       el.style.cssText = `
         position: fixed;
         top: 0; left: 0;
-        font-family: "Noto Nastaliq Urdu", serif;
+        font-family: "Noto Nastaliq Urdu", "Scheherazade New", "Amiri", "Arial", serif;
         font-size: ${28 - i * 2}px;
         line-height: 1;
         color: ${COLORS[i % COLORS.length]};
@@ -54,6 +54,7 @@ export function CursorTrail() {
         z-index: 99999;
         user-select: none;
         font-weight: 400;
+        font-feature-settings: normal;
       `;
       container.appendChild(el);
       nodes.push({ el, x: -200, y: -200 });
