@@ -12,10 +12,9 @@ export function CursorTrail() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Skip on touch — there's no real cursor to trail.
+    // On touch devices we'll trail the *finger* instead of skipping entirely.
     const isTouch =
       "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    if (isTouch) return;
 
     const COUNT = 12;
     const SIZES = [34, 30, 27, 24, 22, 20, 18, 17, 16, 15, 14, 13];
@@ -75,11 +74,34 @@ export function CursorTrail() {
 
     let mx = -9999;
     let my = -9999;
+    let touchActive = false;
+    let fadeStart = 0;
+
     const onMove = (e: MouseEvent) => {
       mx = e.clientX;
       my = e.clientY;
     };
-    window.addEventListener("mousemove", onMove, { passive: true });
+    const onTouch = (e: TouchEvent) => {
+      const t = e.touches[0] || e.changedTouches[0];
+      if (!t) return;
+      mx = t.clientX;
+      my = t.clientY;
+      touchActive = true;
+      fadeStart = performance.now();
+    };
+    const onTouchEnd = () => {
+      // Keep tail visible briefly then fade — start the fade timer
+      fadeStart = performance.now();
+      touchActive = false;
+    };
+
+    if (isTouch) {
+      window.addEventListener("touchstart", onTouch, { passive: true });
+      window.addEventListener("touchmove", onTouch, { passive: true });
+      window.addEventListener("touchend", onTouchEnd, { passive: true });
+    } else {
+      window.addEventListener("mousemove", onMove, { passive: true });
+    }
 
     const start = performance.now();
     let raf = 0;
@@ -87,6 +109,13 @@ export function CursorTrail() {
     const tick = (now: number) => {
       const elapsed = (now - start) / 1000;
       const cycleSeconds = 5;
+
+      // On touch devices fade glyphs out 0.6s after finger lifts
+      let fade = 1;
+      if (isTouch && !touchActive && fadeStart > 0) {
+        const sinceLift = (now - fadeStart) / 1000;
+        fade = Math.max(0, 1 - sinceLift / 0.6);
+      }
 
       let prevX = mx;
       let prevY = my;
@@ -101,6 +130,7 @@ export function CursorTrail() {
         g.el.style.color = color;
         g.el.style.textShadow = `0 0 ${10 + (12 - i)}px ${color}, 0 0 ${20 + (12 - i) * 2}px ${color}`;
         g.el.style.transform = `translate3d(${g.x - 10}px, ${g.y - 16}px, 0)`;
+        g.el.style.opacity = String((1 - i * 0.055) * fade);
 
         prevX = g.x;
         prevY = g.y;
@@ -112,6 +142,9 @@ export function CursorTrail() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("touchstart", onTouch);
+      window.removeEventListener("touchmove", onTouch);
+      window.removeEventListener("touchend", onTouchEnd);
       glyphs.forEach((g) => g.el.remove());
     };
   }, []);
