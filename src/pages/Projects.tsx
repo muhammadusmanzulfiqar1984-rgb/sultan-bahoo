@@ -91,7 +91,7 @@ export function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="group glass rounded-[60px] p-12 hover:border-sacred-red/30 transition-all interactive-card relative overflow-hidden"
+              className="group grid-runner glass rounded-[60px] p-12 hover:border-sacred-red/30 transition-all interactive-card relative overflow-hidden"
             >
               <div className="absolute -top-10 -right-10 w-40 h-40 border border-white/5 rounded-full group-hover:scale-150 transition-transform duration-[2s]" />
               

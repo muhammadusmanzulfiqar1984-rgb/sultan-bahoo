@@ -76,15 +76,36 @@ export function ChatBot() {
 
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating Button — pure ھُو zikr, heartbeat + color cycle (mirrors hero) */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-8 right-8 z-50 w-16 h-16 bg-sacred-red rounded-full shadow-[0_0_30px_rgba(139,0,0,0.5)] flex items-center justify-center text-ivory hover:scale-110 transition-transform active:scale-95 group"
+        aria-label="ملنگ سے بات کریں"
+        className="fixed bottom-8 right-8 z-50 w-20 h-20 flex items-center justify-center hover:scale-110 transition-transform active:scale-95 group"
       >
-        <Sparkles size={28} className="text-gold-antique" />
-        <div className="absolute right-20 bg-sacred-black/90 backdrop-blur-md px-6 py-3 rounded-full border border-sacred-red/30 opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap translate-x-4 group-hover:translate-x-0 flex flex-col items-center leading-none">
-          <p className="font-nastaliq text-sm text-gold-antique" dir="rtl">حکیم سے بات کریں</p>
-          <p className="text-[9px] text-gold-antique/70 uppercase tracking-[0.3em] mt-1">Consult the Sage</p>
+        {/* Soft pulsing halo synced to the heartbeat */}
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 -m-4 rounded-full blur-2xl pointer-events-none animate-zikr-halo"
+        />
+
+        {/* The ھُو itself — same heartbeat scale + gold→crimson color cycle as hero */}
+        <span
+          className="font-nastaliq relative z-10 leading-none animate-zikr-pulse animate-zikr-color"
+          style={{
+            fontSize: "44px",
+            direction: "rtl",
+            transformOrigin: "center",
+            color: "#f0dfb0",
+          }}
+          aria-hidden="true"
+        >
+          ھُو
+        </span>
+
+        {/* Hover tooltip — Malang */}
+        <div className="absolute right-24 bg-sacred-black/95 backdrop-blur-md px-6 py-3 rounded-full border border-sacred-red/30 opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap translate-x-4 group-hover:translate-x-0 flex flex-col items-center leading-none">
+          <p className="font-nastaliq text-base text-gold-antique" dir="rtl">ملنگ</p>
+          <p className="text-[9px] text-gold-antique/70 uppercase tracking-[0.3em] mt-1">Malang</p>
         </div>
       </button>
 

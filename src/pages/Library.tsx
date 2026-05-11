@@ -124,7 +124,7 @@ export function Library() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 1, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                className="group relative glass rounded-[60px] overflow-hidden border border-white/5 transition-all duration-1000 interactive-card"
+                className="group relative grid-runner glass rounded-[60px] overflow-hidden border border-white/5 transition-all duration-1000 interactive-card"
               >
                 <div className="aspect-[3/4.5] overflow-hidden relative">
                   <img src={book.coverImage} alt={book.title} className="w-full h-full object-cover grayscale brightness-[0.4] group-hover:grayscale-0 group-hover:brightness-75 group-hover:scale-110 transition-all duration-[3s]" />

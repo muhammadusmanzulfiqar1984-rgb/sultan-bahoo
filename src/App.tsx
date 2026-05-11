@@ -14,6 +14,7 @@ import { Projects } from "./pages/Projects";
 import { Donate } from "./pages/Donate";
 import { ChatBot } from "./components/ChatBot";
 import { AmbientAudio } from "./components/AmbientAudio";
+import { CursorTrail } from "./components/CursorTrail";
 import { AnimatePresence } from "motion/react";
 
 export default function App() {
@@ -35,6 +36,7 @@ export default function App() {
         </main>
         <ChatBot />
         <AmbientAudio />
+        <CursorTrail />
         <Footer />
       </div>
     </Router>

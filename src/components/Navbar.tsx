@@ -15,6 +15,7 @@ const navLinks = [
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export function Navbar() {
         <Link to="/" className="flex items-center space-x-4 group">
           <div className="w-12 h-12 rounded-full border border-gold-antique/30 flex items-center justify-center bg-sacred-red/10 group-hover:scale-110 group-hover:border-gold-antique transition-all duration-700 relative">
             <div className="absolute inset-0 rounded-full bg-gold-antique/10 animate-pulse-slow" />
-            <span className="text-gold-antique font-serif text-2xl relative z-10">H</span>
+            <span className="font-serif text-2xl relative z-10 animate-zikr-color">H</span>
           </div>
           <div className="hidden sm:block">
             <h1 className="text-xl font-serif leading-none tracking-[0.2em] text-ivory group-hover:text-gold-antique transition-colors">BAHOO</h1>
@@ -45,37 +46,57 @@ export function Navbar() {
           </div>
         </Link>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-12">
-          {navLinks.map((link) => (
+        {/* Desktop Menu — Apple-style sliding hover pill */}
+        <div
+          className="hidden md:flex items-center gap-2 relative"
+          onMouseLeave={() => setHoverIdx(null)}
+        >
+          {navLinks.map((link, i) => (
             <Link
               key={link.path}
               to={link.path}
+              onMouseEnter={() => setHoverIdx(i)}
               className={cn(
-                "relative flex flex-col items-center leading-none transition-all hover:text-gold-antique py-2",
-                location.pathname === link.path ? "text-gold-antique" : "text-ivory/55"
+                "relative flex flex-col items-center leading-none transition-colors duration-300 px-5 py-3 rounded-full",
+                location.pathname === link.path ? "animate-zikr-color" : "text-ivory/55 hover:text-ivory"
               )}
             >
-              <span className="font-nastaliq text-[15px]" dir="rtl">{link.urdu}</span>
-              <span className="text-[8px] uppercase tracking-[0.4em] mt-1 opacity-70">{link.name}</span>
+              {/* Apple-style hover pill — shared layout slides between links */}
+              {hoverIdx === i && (
+                <motion.span
+                  layoutId="nav-hover-pill"
+                  className="absolute inset-0 rounded-full bg-white/[0.06] border border-white/10 backdrop-blur-md -z-0"
+                  transition={{ type: "spring", stiffness: 380, damping: 32, mass: 0.8 }}
+                />
+              )}
+              <span className="font-nastaliq text-[15px] relative z-10" dir="rtl">{link.urdu}</span>
+              <span className="text-[8px] uppercase tracking-[0.4em] mt-1 opacity-70 relative z-10">{link.name}</span>
               {location.pathname === link.path && (
                 <motion.div 
                   layoutId="nav-line"
-                  className="absolute -bottom-0.5 left-0 w-full h-[1px] bg-gold-antique shadow-[0_0_10px_rgba(180,162,105,0.5)]"
+                  className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-8 h-[1.5px] bg-gold-antique shadow-[0_0_10px_rgba(180,162,105,0.5)] rounded-full"
                 />
               )}
             </Link>
           ))}
           
-          <div className="flex items-center space-x-8 pl-8 border-l border-white/5">
+          <div className="flex items-center gap-4 pl-6 ml-2 border-l border-white/5">
             <Link
               to="/donate"
-              className="flex flex-col items-center leading-none text-sacred-red hover:text-gold-antique transition-colors"
+              onMouseEnter={() => setHoverIdx(-1)}
+              className="relative flex flex-col items-center leading-none animate-zikr-color transition-colors duration-300 px-5 py-3 rounded-full hover:text-gold-antique"
             >
-              <span className="font-nastaliq text-[15px]" dir="rtl">عطیہ</span>
-              <span className="text-[8px] uppercase tracking-[0.4em] mt-1 opacity-80">Support</span>
+              {hoverIdx === -1 && (
+                <motion.span
+                  layoutId="nav-hover-pill"
+                  className="absolute inset-0 rounded-full bg-sacred-red/15 border border-sacred-red/30 backdrop-blur-md -z-0"
+                  transition={{ type: "spring", stiffness: 380, damping: 32, mass: 0.8 }}
+                />
+              )}
+              <span className="font-nastaliq text-[15px] relative z-10" dir="rtl">عطیہ</span>
+              <span className="text-[8px] uppercase tracking-[0.4em] mt-1 opacity-80 relative z-10">Support</span>
             </Link>
-            <button className="text-ivory/30 hover:text-gold-antique transition-colors">
+            <button className="text-ivory/30 hover:text-gold-antique transition-colors p-2">
               <Globe size={16} />
             </button>
           </div>

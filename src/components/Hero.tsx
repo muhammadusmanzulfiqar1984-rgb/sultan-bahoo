@@ -182,29 +182,33 @@ export function Hero() {
         style={{ opacity: opacityText }}
         className="relative z-20 h-full w-full flex flex-col"
       >
-        {/* Top kicker: Urdu calligraphy */}
+        {/* Top kicker: Urdu calligraphy — cinematic heartbeat zikr */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 2.4, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
           className="absolute top-[9%] left-1/2 -translate-x-1/2 text-center"
         >
-          <div
-            className="font-nastaliq text-[clamp(1.8rem,3.6vw,2.8rem)] leading-none animate-breathe"
-            style={{
-              color: "#d9c89a",
-              textShadow:
-                "0 0 30px rgba(217,200,154,0.35), 0 0 60px rgba(107,15,26,0.18)",
-              letterSpacing: "0.02em",
-              direction: "rtl",
-            }}
-            aria-label="Allah Hoo"
-          >
-            اَللہ ھُو
+          {/* Radial halo behind text that pulses like a heart */}
+          <div className="relative inline-block">
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 -m-12 rounded-full blur-3xl pointer-events-none animate-zikr-halo"
+            />
+            <div
+              className="font-nastaliq relative text-[clamp(2rem,4vw,3.2rem)] leading-none animate-zikr-pulse animate-zikr-color"
+              style={{
+                letterSpacing: "0.02em",
+                direction: "rtl",
+              }}
+              aria-label="Allah Hoo"
+            >
+              اَللہ ھُو
+            </div>
           </div>
           <div
-            className="font-nastaliq mt-3 text-[clamp(0.75rem,1vw,0.9rem)] tracking-wide"
-            style={{ color: "rgba(217,200,154,0.45)", direction: "rtl" }}
+            className="font-nastaliq mt-4 text-[clamp(0.75rem,1vw,0.9rem)] tracking-wide"
+            style={{ color: "rgba(217,200,154,0.5)", direction: "rtl" }}
           >
             سلطان باہُو
           </div>

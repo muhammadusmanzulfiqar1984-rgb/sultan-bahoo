@@ -164,7 +164,7 @@ export function AmbientAudio() {
         transition={{ duration: 1.2, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
         onClick={toggle}
         aria-label={muted ? "Enable ambient sound" : "Mute ambient sound"}
-        className="group fixed z-[80] bottom-6 right-6 sm:bottom-8 sm:right-8 flex items-center gap-3 px-4 py-2.5 rounded-full backdrop-blur-xl border border-white/10 hover:border-gold-antique/40 transition-all duration-700"
+        className="group fixed z-[80] bottom-6 left-6 sm:bottom-8 sm:left-8 flex items-center gap-3 px-4 py-2.5 rounded-full backdrop-blur-xl border border-white/10 hover:border-gold-antique/40 transition-all duration-700"
         style={{
           background:
             "linear-gradient(135deg, rgba(20,16,10,0.55), rgba(8,6,4,0.55))",

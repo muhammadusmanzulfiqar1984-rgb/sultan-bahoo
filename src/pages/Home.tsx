@@ -101,8 +101,38 @@ export function Home() {
       </section>
 
       {/* The Divine Echoes - Kalam Experience */}
-      <section className="py-40 bg-white/[0.01] relative border-y border-white/[0.03]">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="relative py-40 bg-white/[0.01] border-y border-white/[0.03] overflow-hidden">
+        {/* Faded shrine watermark + giant ھُو calligraphy */}
+        <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
+          <img
+            src="/shrine.jpg"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover opacity-[0.08]"
+            style={{ filter: "brightness(1.1) contrast(1.05) saturate(0.85) sepia(0.2)" }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(16,12,8,0.25) 0%, rgba(16,12,8,0.85) 80%, #100c08 100%)",
+            }}
+          />
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-sacred-black to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-sacred-black to-transparent" />
+          {/* Giant Nastaliq watermark on the left */}
+          <span
+            className="font-nastaliq absolute -left-8 top-1/2 -translate-y-1/2 leading-none gold-shimmer-text select-none"
+            style={{
+              fontSize: "clamp(14rem, 26vw, 28rem)",
+              opacity: 0.06,
+              direction: "rtl",
+              filter: "blur(0.5px)",
+            }}
+          >
+            کلام
+          </span>
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-12">
             <div className="max-w-2xl">
               <span className="text-gold-antique uppercase text-[10px] tracking-[0.6em] mb-4 block">آوازِ روح · The Voice of Soul</span>
@@ -153,10 +183,30 @@ export function Home() {
       </section>
 
       {/* The Sacred Archive - Library */}
-      <section className="py-40 px-6 relative">
+      <section className="py-40 px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/pinstriped-suit.png')] opacity-20 pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto text-center mb-32">
+
+        {/* Drifting gold dust motes */}
+        <div aria-hidden="true" className="absolute inset-0 pointer-events-none overflow-hidden">
+          {Array.from({ length: 18 }).map((_, i) => (
+            <span
+              key={i}
+              className="absolute rounded-full"
+              style={{
+                left: `${(i * 137) % 100}%`,
+                bottom: `-${10 + (i * 7) % 30}%`,
+                width: `${2 + (i % 3)}px`,
+                height: `${2 + (i % 3)}px`,
+                background:
+                  "radial-gradient(circle, rgba(240,223,176,0.7) 0%, rgba(212,190,134,0.3) 50%, transparent 100%)",
+                boxShadow: "0 0 5px rgba(240,223,176,0.45)",
+                animation: `dust-rise ${22 + (i % 8) * 2}s linear ${(i * 0.7) % 6}s infinite`,
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto text-center mb-32">
           <span className="text-gold-antique uppercase text-[10px] tracking-[0.6em] mb-6 block">میراثِ محفوظ · Legacy Preserved</span>
           <h2 className="font-nastaliq text-6xl md:text-8xl mb-4 gold-gradient leading-[1.4]" dir="rtl">قدیمی کتب خانہ</h2>
           <h3 className="text-3xl md:text-4xl font-serif italic gold-gradient mb-10">Archives of Antiquity</h3>
@@ -337,12 +387,17 @@ export function Home() {
           
           <div className="relative">
              <div className="aspect-video glass rounded-[50px] overflow-hidden border border-sacred-red/10 group cursor-pointer">
-                <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=1000" className="w-full h-full object-cover grayscale brightness-50 contrast-125 group-hover:scale-105 transition-transform duration-[2s]" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-24 h-24 rounded-full glass flex items-center justify-center group-hover:scale-110 transition-transform shadow-2xl border-white/10">
-                    <PlayCircle size={40} className="text-gold-antique" />
-                  </div>
-                </div>
+                <video
+                  src="/shrine.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  aria-hidden="true"
+                  className="w-full h-full object-cover brightness-95 contrast-105 group-hover:scale-105 transition-transform duration-[2s]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-sacred-black/60 via-transparent to-transparent pointer-events-none" />
              </div>
              {/* Decorative geometry */}
              <div className="absolute -bottom-10 -left-10 w-40 h-40 border border-sacred-red/10 rounded-[30%] rotate-45 pointer-events-none" />
@@ -352,12 +407,35 @@ export function Home() {
       </section>
 
       {/* The Seeker's Interaction - AI Prompt */}
-      <section className="py-40 px-6">
+      <section className="relative py-40 px-6 overflow-hidden">
+        {/* Shrine video backdrop */}
+        <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
+          <video
+            src="/shrine.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover opacity-[0.32]"
+            style={{ filter: "brightness(1.0) contrast(1.05) saturate(0.9) sepia(0.18)" }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(16,12,8,0.20) 0%, rgba(16,12,8,0.65) 75%, rgba(16,12,8,0.9) 100%)",
+            }}
+          />
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-sacred-black to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-sacred-black to-transparent" />
+        </div>
+
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="max-w-5xl mx-auto glass rounded-[60px] p-16 md:p-32 text-center border-sacred-red/10 overflow-hidden relative"
+          className="max-w-5xl mx-auto rounded-[60px] p-16 md:p-32 text-center overflow-hidden relative bg-sacred-black/15 backdrop-blur-[2px] border border-gold-antique/10 ring-1 ring-white/5"
         >
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sacred-red/5 blur-[120px] pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gold-antique/5 blur-[100px] pointer-events-none" />
@@ -381,13 +459,72 @@ export function Home() {
         </motion.div>
       </section>
 
-      {/* Final Call - Support */}
-      <section className="py-40 px-6 border-t border-white/[0.03] text-center">
-        <div className="max-w-3xl mx-auto">
+      {/* Final Call - Support — cinematic backdrop */}
+      <section className="relative py-48 px-6 border-t border-white/[0.03] text-center overflow-hidden">
+        {/* Layer 1: faded shrine photo */}
+        <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
+          <img
+            src="/shrine.jpg"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover opacity-[0.32]"
+            style={{ filter: "brightness(1.1) contrast(1.05) saturate(0.95) sepia(0.18)" }}
+          />
+          {/* Soft vignette + edge fades */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(16,12,8,0.15) 0%, rgba(16,12,8,0.55) 78%, rgba(16,12,8,0.85) 100%)",
+            }}
+          />
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-sacred-black to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-sacred-black to-transparent" />
+        </div>
+
+        {/* Layer 2: giant ھُو watermark calligraphy on the right */}
+        <div
+          aria-hidden="true"
+          className="absolute -right-12 md:-right-20 top-1/2 -translate-y-1/2 pointer-events-none select-none"
+        >
+          <span
+            className="font-nastaliq block leading-none gold-shimmer-text"
+            style={{
+              fontSize: "clamp(18rem, 32vw, 36rem)",
+              opacity: 0.18,
+              direction: "rtl",
+              filter: "blur(0.5px)",
+            }}
+          >
+            ھُو
+          </span>
+        </div>
+
+        {/* Layer 3: drifting gold dust particles */}
+        <div aria-hidden="true" className="absolute inset-0 pointer-events-none overflow-hidden">
+          {Array.from({ length: 24 }).map((_, i) => (
+            <span
+              key={i}
+              className="absolute rounded-full"
+              style={{
+                left: `${(i * 137) % 100}%`,
+                bottom: `-${10 + (i * 7) % 30}%`,
+                width: `${2 + (i % 4)}px`,
+                height: `${2 + (i % 4)}px`,
+                background:
+                  "radial-gradient(circle, rgba(240,223,176,0.85) 0%, rgba(212,190,134,0.4) 50%, transparent 100%)",
+                boxShadow: "0 0 6px rgba(240,223,176,0.5)",
+                animation: `dust-rise ${18 + (i % 8) * 2}s linear ${(i * 0.7) % 6}s infinite`,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 max-w-3xl mx-auto">
           <h2 className="font-nastaliq text-4xl md:text-6xl mb-3 text-ivory leading-[1.4]" dir="rtl">حلقۂ رحمت</h2>
           <h3 className="text-xl md:text-2xl font-serif italic gold-gradient mb-8">Circle of Mercy</h3>
-          <p className="font-nastaliq text-ivory/55 mb-2 text-lg leading-[2]" dir="rtl">”جو پیاسوں کی خدمت کرتا ہے، وہ سمندر پا لیتا ہے۔“</p>
-          <p className="text-ivory/30 mb-12 italic font-serif text-sm">"One who serves the thirsty, finds the ocean."</p>
+          <p className="font-nastaliq text-ivory/65 mb-2 text-lg leading-[2]" dir="rtl">”جو پیاسوں کی خدمت کرتا ہے، وہ سمندر پا لیتا ہے۔“</p>
+          <p className="text-ivory/35 mb-12 italic font-serif text-sm">"One who serves the thirsty, finds the ocean."</p>
           <Link to="/donate" className="inline-flex flex-col items-center text-sacred-red hover:text-gold-antique transition-colors border-b border-sacred-red/20 pb-2">
             <span className="font-nastaliq text-lg leading-none" dir="rtl">مشن کا ساتھ دیں</span>
             <span className="text-[9px] uppercase tracking-[0.6em] font-bold mt-1 opacity-80">Support the Mission</span>
