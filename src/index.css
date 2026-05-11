@@ -309,17 +309,53 @@
   will-change: transform, color, text-shadow;
 }
 
-/* Color cycle: champagne gold → crimson → blood red → back */
+/* Color cycle: dramatic gold ↔ ember ↔ crimson with strong glow */
 @keyframes zikr-color {
-  0%   { color: #f0dfb0 !important; text-shadow: 0 0 24px rgba(240,223,176,0.7),  0 0 48px rgba(212,190,134,0.4); }
-  20%  { color: #e8c97a !important; text-shadow: 0 0 28px rgba(232,201,122,0.85), 0 0 56px rgba(180,80,40,0.5);  }
-  40%  { color: #f04a1a !important; text-shadow: 0 0 32px rgba(240,74,26,0.9),    0 0 64px rgba(139,15,26,0.7);  }
-  60%  { color: #8a0f1a !important; text-shadow: 0 0 30px rgba(138,15,26,0.85),   0 0 60px rgba(232,201,122,0.45);}
-  80%  { color: #c2461d !important; text-shadow: 0 0 28px rgba(194,70,29,0.85),   0 0 56px rgba(240,223,176,0.45);}
-  100% { color: #f0dfb0 !important; text-shadow: 0 0 24px rgba(240,223,176,0.7),  0 0 48px rgba(212,190,134,0.4); }
+  0%   {
+    color: #faecc4 !important;
+    text-shadow:
+      0 0 12px #faecc4,
+      0 0 28px rgba(240,223,176,0.85),
+      0 0 56px rgba(212,190,134,0.5);
+  }
+  20%  {
+    color: #f5c861 !important;
+    text-shadow:
+      0 0 14px #f5c861,
+      0 0 32px rgba(232,201,122,0.95),
+      0 0 60px rgba(180,80,40,0.55);
+  }
+  40%  {
+    color: #ff5a14 !important;
+    text-shadow:
+      0 0 18px #ff5a14,
+      0 0 38px rgba(240,90,40,1),
+      0 0 70px rgba(139,15,26,0.75);
+  }
+  60%  {
+    color: #c20a18 !important;
+    text-shadow:
+      0 0 16px #c20a18,
+      0 0 36px rgba(194,10,24,0.95),
+      0 0 70px rgba(255,90,40,0.5);
+  }
+  80%  {
+    color: #ff7a2a !important;
+    text-shadow:
+      0 0 14px #ff7a2a,
+      0 0 32px rgba(255,122,42,0.9),
+      0 0 60px rgba(240,223,176,0.45);
+  }
+  100% {
+    color: #faecc4 !important;
+    text-shadow:
+      0 0 12px #faecc4,
+      0 0 28px rgba(240,223,176,0.85),
+      0 0 56px rgba(212,190,134,0.5);
+  }
 }
 .animate-zikr-color {
-  animation: zikr-color 5s ease-in-out infinite;
+  animation: zikr-color 4.5s ease-in-out infinite;
 }
 
 /* Halo glow that pulses in sync with the heartbeat */
