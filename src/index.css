@@ -1,0 +1,277 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@100;200;300;400;500;600&family=Noto+Nastaliq+Urdu:wght@400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Arabic/Urdu codepoints automatically fall through to Noto Nastaliq Urdu
+     thanks to its `unicode-range` declaration in the Google Fonts CSS.
+     So every font stack ends with it — no per-element font class needed. */
+  --font-serif: "Cormorant Garamond", "Noto Nastaliq Urdu", serif;
+  --font-display: "Playfair Display", "Cormorant Garamond", "Noto Nastaliq Urdu", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Noto Nastaliq Urdu", system-ui, sans-serif;
+  --font-nastaliq: "Noto Nastaliq Urdu", serif;
+  
+  --color-sacred-red: #6b0f1a;
+  --color-crimson-deep: #4a0a12;
+  --color-gold-antique: #d4be86;
+  --color-gold-muted: #b09a68;
+  --color-gold-champagne: #f0dfb0;
+  --color-ivory: #ead9a5;
+  --color-sandstone: #e2d1c3;
+  --color-sacred-black: #100c08;
+  --color-charcoal-soft: #1f1812;
+  --color-glow-gold: rgba(212, 190, 134, 0.55);
+}
+
+:root {
+  background-color: var(--color-sacred-black);
+  color: var(--color-ivory);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01", "ss02", "cv11", "kern", "liga", "calt";
+    font-optical-sizing: auto;
+  }
+
+  body {
+    @apply font-sans antialiased bg-sacred-black text-ivory selection:bg-gold-antique selection:text-sacred-black;
+    font-weight: 200;
+    letter-spacing: -0.011em;
+    /* Site-wide muted gold body text with a slow shimmer wash */
+    background-image: linear-gradient(
+      110deg,
+      transparent 0%,
+      transparent 100%
+    );
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="4" fill="%23b4a269" fill-opacity="0.5"/></svg>'), auto;
+  }
+
+  /* Apply muted gold shimmer to ALL text site-wide.
+     Affects every <p>, <span>, <a>, <li>, <h*> unless an explicit text color is set inline. */
+  body, body * {
+    color: #c9b378;
+  }
+
+  /* Headings get the brighter shimmer-gold gradient */
+  h1, h2, h3, h4, h5, h6 {
+    background: linear-gradient(
+      110deg,
+      #8a7a4d 0%,
+      #c9b378 25%,
+      #f0e0b0 48%,
+      #faecc4 52%,
+      #f0e0b0 56%,
+      #c9b378 75%,
+      #8a7a4d 100%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: shimmer-sweep 9s ease-in-out infinite;
+    /* Avoid descender clipping */
+    padding-bottom: 0.18em;
+  }
+
+  /* Apple-style headlines: tighter tracking on larger sizes, lighter weight */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+    font-weight: 300;
+    letter-spacing: -0.022em;
+    font-feature-settings: "ss01", "kern", "liga";
+  }
+  h1 { letter-spacing: -0.028em; font-weight: 300; }
+  h2 { letter-spacing: -0.024em; font-weight: 300; }
+
+  /* Refined Nastaliq: ALWAYS render at 400 (only weight Noto Nastaliq has).
+     Force-kill any inherited boldness from Tailwind .font-bold / .font-medium. */
+  :lang(ur), :lang(ar), :lang(fa),
+  [dir="rtl"] {
+    font-family: var(--font-nastaliq);
+    font-style: normal !important;
+    font-weight: 400 !important;
+    font-synthesis: none;
+    line-height: 2.1;
+    letter-spacing: 0;
+    word-spacing: 0.05em;
+    text-underline-offset: 0.4em;
+  }
+
+  /* Tighter line-height when Nastaliq is used as a HEADLINE (large font sizes).
+     Otherwise huge headings get massive vertical gaps. */
+  h1[dir="rtl"], h2[dir="rtl"], h3[dir="rtl"],
+  h1:lang(ur), h2:lang(ur), h3:lang(ur) {
+    line-height: 1.45;
+    word-spacing: 0.08em;
+  }
+
+  /* Body paragraphs in Urdu get the relaxed leading */
+  p[dir="rtl"], p:lang(ur), li[dir="rtl"], li:lang(ur) {
+    line-height: 2.05;
+  }
+}
+
+/* Nastaliq utility: make sure font-nastaliq class also gets refined defaults */
+.font-nastaliq {
+  font-family: var(--font-nastaliq);
+  font-style: normal;
+  font-weight: 400 !important;
+  font-synthesis: none;
+  word-spacing: 0.05em;
+}
+
+/* Custom Utilities */
+.glass {
+  @apply bg-white/[0.03] backdrop-blur-3xl border border-white/10;
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #b4a269 0%, #d4c491 50%, #b4a269 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Prevent descender / Nastaliq glyph clipping when used as a heading */
+  display: inline-block;
+  padding-bottom: 0.4em;
+  padding-top: 0.08em;
+  line-height: 1.5;
+}
+
+.red-glow {
+  box-shadow: 0 0 50px -10px rgba(139, 0, 0, 0.4);
+}
+
+.shrine-glow {
+  filter: drop-shadow(0 0 30px rgba(180, 162, 105, 0.3));
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes float {
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.1; }
+  50% { transform: translateY(-40px) translateX(20px) scale(1.5); opacity: 0.4; }
+  100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.1; }
+}
+
+@keyframes light-ray {
+  0% { opacity: 0; transform: rotate(-25deg) translateX(-10%); }
+  50% { opacity: 0.2; }
+  100% { opacity: 0; transform: rotate(-25deg) translateX(10%); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+.animate-float {
+  animation: float 20s linear infinite;
+}
+
+.animate-ray {
+  animation: light-ray 15s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s ease-in-out infinite;
+}
+
+.interactive-card {
+  @apply transition-all duration-1000 hover:border-sacred-red/40 hover:bg-sacred-red/[0.03] hover:shadow-[0_0_50px_rgba(139,0,0,0.15)];
+}
+
+.text-reveal {
+  @apply relative overflow-hidden;
+}
+
+.text-reveal::after {
+  content: "";
+  @apply absolute inset-0 bg-sacred-black transition-transform duration-1000 ease-in-out translate-x-0;
+}
+
+.vignette {
+  background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 100%);
+}
+
+.divine-border {
+  @apply relative;
+}
+
+.divine-border::before {
+  content: "";
+  @apply absolute -inset-[1px] bg-gradient-to-r from-transparent via-gold-antique/20 to-transparent rounded-[inherit] pointer-events-none;
+}
+
+/* === Sacred Sanctuary Hero === */
+.font-display { font-family: var(--font-display); }
+
+.shrine-glow-inner {
+  filter: drop-shadow(0 0 40px rgba(217, 200, 154, 0.35))
+          drop-shadow(0 0 120px rgba(217, 200, 154, 0.18));
+}
+
+.gold-shimmer-text {
+  background: linear-gradient(
+    100deg,
+    #8a7a4d 0%,
+    #b4a269 25%,
+    #e8d9a8 45%,
+    #f5e9c2 50%,
+    #e8d9a8 55%,
+    #b4a269 75%,
+    #8a7a4d 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Prevent descender clipping (g, p, j, y, ؤ, ج, ھ) */
+  display: inline-block;
+  padding-bottom: 0.45em;
+  padding-top: 0.1em;
+  line-height: 1.6;
+  animation: shimmer-sweep 9s ease-in-out infinite;
+}
+
+@keyframes shimmer-sweep {
+  0%, 100% { background-position: 200% 50%; }
+  50% { background-position: 0% 50%; }
+}
+
+@keyframes haze-drift {
+  0%, 100% { transform: translate3d(-2%, 0, 0) scale(1.05); opacity: 0.55; }
+  50% { transform: translate3d(2%, -1%, 0) scale(1.08); opacity: 0.75; }
+}
+.animate-haze { animation: haze-drift 22s ease-in-out infinite; }
+
+@keyframes ember-rise {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  10% { opacity: var(--ember-opacity, 0.5); }
+  90% { opacity: var(--ember-opacity, 0.5); }
+  100% { transform: translateY(-110vh) translateX(var(--ember-drift, 20px)); opacity: 0; }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.015); }
+}
+.animate-breathe { animation: breathe 7s ease-in-out infinite; }
+
+@keyframes seal-rotate {
+  to { transform: rotate(360deg); }
+}
+.animate-seal { animation: seal-rotate 60s linear infinite; }
+
+.hairline {
+  background: linear-gradient(90deg, transparent, rgba(180,162,105,0.5) 20%, rgba(217,200,154,0.85) 50%, rgba(180,162,105,0.5) 80%, transparent);
+}
+
+.text-shadow-soft {
+  text-shadow: 0 1px 30px rgba(0,0,0,0.6), 0 0 1px rgba(245,239,226,0.2);
+}
