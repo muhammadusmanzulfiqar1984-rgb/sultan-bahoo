@@ -60,15 +60,15 @@ export function Footer() {
               <li className="flex flex-col space-y-2">
                 <span className="text-[9px] text-gold-antique/40 uppercase tracking-[0.3em]">مقامِ حضور · Physical Presence</span>
                 <span className="font-nastaliq text-lg" dir="rtl">لاہور، پنجاب</span>
-                <span className="italic font-serif text-sm normal-case opacity-70">Lahore, Punjab</span>
+                <span className="font-numeric text-sm opacity-70">Lahore, Punjab</span>
               </li>
               <li className="flex flex-col space-y-2">
                 <span className="text-[9px] text-gold-antique/40 uppercase tracking-[0.3em]">آوازی رابطہ · Voice Transmission</span>
-                <span className="italic font-serif text-lg normal-case">+92 (42) HSBF-Hoo</span>
+                <span className="font-numeric text-base">+92 (42) HSBF-Hoo</span>
               </li>
               <li className="flex flex-col space-y-2">
                  <span className="text-[9px] text-gold-antique/40 uppercase tracking-[0.3em]">ڈیجیٹل گونج · Digital Echo</span>
-                 <span className="italic font-serif text-lg normal-case">connect@hsbf.com</span>
+                 <span className="font-numeric text-base">connect@hsbf.com</span>
               </li>
             </ul>
           </div>

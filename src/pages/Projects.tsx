@@ -1,6 +1,8 @@
 import { motion } from "motion/react";
-import { GraduationCap, HeartPulse, Refrigerator, Sprout, Soup, Waves } from "lucide-react";
+import { GraduationCap, HeartPulse, Refrigerator, Sprout, Soup, Waves, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
+import { SacredAtmosphere } from "../components/SacredAtmosphere";
+import { ScrollProgressOrnament } from "../components/ScrollProgressOrnament";
 
 const PROJECTS = [
   {
@@ -66,8 +68,17 @@ function ShieldCheckIcon() {
 
 export function Projects() {
   return (
-    <div className="pt-40 pb-20 px-6 bg-sacred-black min-h-screen">
-      <div className="max-w-7xl mx-auto">
+    <div className="pt-40 pb-20 px-6 bg-sacred-black min-h-screen relative">
+      <SacredAtmosphere tone="crimson" embers={24} />
+      <ScrollProgressOrnament
+        glyph="خدمت"
+        sections={[
+          { urdu: "تجلّی", label: "Manifestation" },
+          { urdu: "خدمات", label: "Initiatives" },
+          { urdu: "حلقہ", label: "Circle" },
+        ]}
+      />
+      <div className="max-w-7xl mx-auto relative z-10">
         <header className="mb-32 text-center relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-sacred-red/5 rounded-full blur-[120px] -z-10" />
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5 }}>

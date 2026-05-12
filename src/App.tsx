@@ -12,6 +12,7 @@ import { Kalam } from "./pages/Kalam";
 import { About } from "./pages/About";
 import { Projects } from "./pages/Projects";
 import { Donate } from "./pages/Donate";
+import { FontTrial } from "./pages/FontTrial";
 import { ChatBot } from "./components/ChatBot";
 import { AmbientAudio } from "./components/AmbientAudio";
 import { CursorTrail } from "./components/CursorTrail";
@@ -31,6 +32,7 @@ export default function App() {
               <Route path="/about" element={<About />} />
               <Route path="/projects" element={<Projects />} />
               <Route path="/donate" element={<Donate />} />
+              <Route path="/fonts" element={<FontTrial />} />
             </Routes>
           </AnimatePresence>
         </main>

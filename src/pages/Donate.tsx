@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { CreditCard, Landmark, Smartphone, Heart, ShieldCheck } from "lucide-react";
+import { cn } from "../lib/utils";
+import { SacredAtmosphere } from "../components/SacredAtmosphere";
+import { ScrollProgressOrnament } from "../components/ScrollProgressOrnament";
 
 export function Donate() {
   const [amount, setAmount] = useState<string>("1000");
@@ -9,8 +12,17 @@ export function Donate() {
   const presets = ["500", "1000", "5000", "10000", "50000"];
 
   return (
-    <div className="pt-40 pb-24 px-6 bg-sacred-black min-h-screen">
-      <div className="max-w-7xl mx-auto">
+    <div className="pt-40 pb-24 px-6 bg-sacred-black min-h-screen relative">
+      <SacredAtmosphere tone="gold" embers={22} />
+      <ScrollProgressOrnament
+        glyph="کرم"
+        sections={[
+          { urdu: "تعاون", label: "Contribution" },
+          { urdu: "تقسیم", label: "Distribution" },
+          { urdu: "میراث", label: "Legacy" },
+        ]}
+      />
+      <div className="max-w-7xl mx-auto relative z-10">
         <header className="mb-32 text-center relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-sacred-red/5 rounded-full blur-[120px] -z-10" />
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5 }}>

@@ -1,4 +1,8 @@
+import React from "react";
 import { motion } from "motion/react";
+import { cn } from "../lib/utils";
+import { SacredAtmosphere } from "../components/SacredAtmosphere";
+import { ScrollProgressOrnament } from "../components/ScrollProgressOrnament";
 
 export function About() {
   const timeline = [
@@ -10,11 +14,21 @@ export function About() {
 
   return (
     <div className="pt-40 pb-24 px-6 bg-sacred-black min-h-screen relative overflow-hidden">
+      <SacredAtmosphere tone="gold" embers={26} />
+      <ScrollProgressOrnament
+        glyph="باھُو"
+        sections={[
+          { urdu: "ظہور", label: "Manifestation" },
+          { urdu: "جوہر", label: "Essence" },
+          { urdu: "نقوش", label: "Footprints" },
+          { urdu: "سلسلہ", label: "Lineage" },
+        ]}
+      />
       {/* Background Ambience */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-sacred-red/5 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gold-antique/5 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto relative z-10">
         <header className="mb-32 text-center">
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5 }}>
             <span className="text-sacred-red uppercase text-[10px] tracking-[0.8em] mb-8 block font-bold">عظیم تجلّی · The Great Manifestation</span>

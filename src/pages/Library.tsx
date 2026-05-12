@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Search, Download, Book as BookIcon, Filter, ExternalLink } from "lucide-react";
 import { Book } from "../types";
+import { SacredAtmosphere } from "../components/SacredAtmosphere";
+import { ScrollProgressOrnament } from "../components/ScrollProgressOrnament";
 
 const BOOKS: Book[] = [
   {
@@ -58,8 +60,17 @@ export function Library() {
   });
 
   return (
-    <div className="min-h-screen pt-40 pb-24 px-6 bg-sacred-black">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen pt-40 pb-24 px-6 bg-sacred-black relative">
+      <SacredAtmosphere tone="gold" />
+      <ScrollProgressOrnament
+        glyph="کِتاب"
+        sections={[
+          { urdu: "تلاش", label: "Search" },
+          { urdu: "نسخے", label: "Manuscripts" },
+          { urdu: "حاصل کریں", label: "Obtain" },
+        ]}
+      />
+      <div className="max-w-7xl mx-auto relative z-10">
         <header className="mb-32 text-center relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gold-antique/5 rounded-full blur-[120px] -z-10" />
           <motion.div

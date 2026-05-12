@@ -1,24 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,200..700,0..100,0..1;1,9..144,200..700,0..100,0..1&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@200..700&family=Noto+Nastaliq+Urdu:wght@400&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* Arabic/Urdu codepoints automatically fall through to Noto Nastaliq Urdu
-     thanks to its `unicode-range` declaration in the Google Fonts CSS. */
-  --font-serif: "Fraunces", "Instrument Serif", "Noto Nastaliq Urdu", ui-serif, Georgia, serif;
-  --font-display: "Fraunces", "Instrument Serif", "Noto Nastaliq Urdu", ui-serif, serif;
-  --font-sans: "Inter Tight", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Noto Nastaliq Urdu", system-ui, sans-serif;
-  --font-nastaliq: "Noto Nastaliq Urdu", serif;
-  
+  /* Apple system stack — SF Pro on Apple devices, falls back gracefully elsewhere.
+     Arabic/Urdu uses SF Arabic on Apple, Vazirmatn / system Arabic elsewhere. */
+  --font-serif: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+  --font-nastaliq: "SF Arabic", "SF Arabic Rounded", -apple-system, "Geeza Pro", "Vazirmatn", "Noto Nastaliq Urdu", system-ui, sans-serif;
+
+  /* Dull bronze-gold palette — deeper, more antique */
   --color-sacred-red: #6b0f1a;
   --color-crimson-deep: #4a0a12;
-  --color-gold-antique: #d4be86;
-  --color-gold-muted: #b09a68;
-  --color-gold-champagne: #f0dfb0;
-  --color-ivory: #ead9a5;
-  --color-sandstone: #e2d1c3;
-  --color-sacred-black: #100c08;
-  --color-charcoal-soft: #1f1812;
-  --color-glow-gold: rgba(212, 190, 134, 0.55);
+  --color-bronze-deep:    #6e5530;   /* deep oxidized bronze   */
+  --color-bronze:         #8a6d3f;   /* core bronze            */
+  --color-bronze-light:   #a98655;   /* highlight bronze       */
+  --color-gold-antique:   #b89b5e;   /* dull antique gold      */
+  --color-gold-muted:     #8c7340;   /* deeper muted gold      */
+  --color-gold-champagne: #d6bd86;   /* highlight champagne    */
+  --color-ivory:          #d8c8a0;   /* warmer ivory           */
+  --color-sandstone:      #c2a87f;
+  --color-sacred-black:   #0e0a06;
+  --color-charcoal-soft:  #1a140d;
+  --color-glow-gold: rgba(184, 155, 94, 0.5);
 }
 
 :root {
@@ -41,12 +44,12 @@
     @apply font-sans antialiased bg-sacred-black text-ivory selection:bg-gold-antique selection:text-sacred-black;
     font-weight: 300;
     letter-spacing: -0.014em;
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="4" fill="%23b4a269" fill-opacity="0.5"/></svg>'), auto;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="4" fill="%238a6d3f" fill-opacity="0.55"/></svg>'), auto;
   }
 
-  /* Apply muted gold to all body text site-wide */
+  /* Apply dull bronze-gold to all body text site-wide */
   body, body * {
-    color: #c9b378;
+    color: #a98655;
   }
 
   /* …but force dark text wherever a button explicitly uses a light/gold background */
@@ -58,38 +61,60 @@
   .text-sacred-black * {
     color: #100c08 !important;
   }
-  /* Explicit ivory-on-dark stays ivory */
-  .text-ivory, .text-ivory * { color: #ead9a5 !important; }
+  /* Explicit ivory-on-dark stays warm */
+  .text-ivory, .text-ivory * { color: #d8c8a0 !important; }
 
-  /* Refined headlines: Fraunces with display optical size + soft axes */
+  /* Shared headline base — Apple system, refined tracking */
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
-    font-weight: 350;
+    font-weight: 300;
     letter-spacing: -0.025em;
-    font-feature-settings: "ss01", "ss02", "kern", "liga", "dlig";
-    /* Fraunces variable axes: large optical size + soft terminals = elegant */
-    font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 0;
-    background: linear-gradient(
-      110deg,
-      #8a7a4d 0%,
-      #c9b378 25%,
-      #f0e0b0 48%,
-      #faecc4 52%,
-      #f0e0b0 56%,
-      #c9b378 75%,
-      #8a7a4d 100%
-    );
-    background-size: 220% 100%;
+    color: #b89b5e;
+  }
+
+  /* Display-tier headlines (h1, h2): dull antique gold + bronze layered shimmer */
+  h1, h2 {
+    /* Layer 1 — base bronze gradient (rich, oxidized) */
+    background:
+      linear-gradient(
+        100deg,
+        #4d3a1c 0%,
+        #6e5530 18%,
+        #8a6d3f 32%,
+        #b89b5e 46%,
+        #d6bd86 50%,    /* highlight pinch */
+        #b89b5e 54%,
+        #8a6d3f 68%,
+        #6e5530 82%,
+        #4d3a1c 100%
+      );
+    background-size: 240% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
-    animation: shimmer-sweep 9s ease-in-out infinite;
+    /* dual-axis shimmer + breathing glow handled in keyframes */
+    animation: bronze-shimmer 11s ease-in-out infinite;
     padding-bottom: 0.18em;
+    text-shadow: 0 0 0 transparent; /* reset — glow added below via filter */
+    filter: drop-shadow(0 1px 0 rgba(0,0,0,0.55))
+            drop-shadow(0 0 14px rgba(184,155,94,0.18));
   }
-  h1 { letter-spacing: -0.032em; font-weight: 320; font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1; }
-  h2 { letter-spacing: -0.028em; font-weight: 340; }
-  h3 { letter-spacing: -0.024em; }
+  h1 { letter-spacing: -0.034em; font-weight: 250; }
+  h2 { letter-spacing: -0.030em; font-weight: 280; }
+
+  /* Sub-headlines (h3-h6): solid dull bronze, no animation */
+  h3 { font-size: 1.6em;  font-weight: 320; letter-spacing: -0.020em; color: #b89b5e; }
+  h4 { font-size: 1.25em; font-weight: 360; letter-spacing: -0.015em; color: #a98655; }
+  h5 { font-size: 1.05em; font-weight: 400; letter-spacing: -0.010em; color: #8c7340; }
+  h6 {
+    font-size: 0.78em;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #8c7340;
+    font-family: var(--font-sans);
+  }
 
   /* Refined Nastaliq: ALWAYS render at 400 (only weight Noto Nastaliq has).
      Force-kill any inherited boldness from Tailwind .font-bold / .font-medium. */
@@ -128,21 +153,90 @@
   word-spacing: 0.05em;
 }
 
+/* Numeric / contact / code: refined Inter Tight with tabular figures.
+   Use for phone numbers, emails, percentages, amounts, codes — anything
+   that should NOT be italicized in Fraunces. */
+.font-numeric {
+  font-family: var(--font-sans);
+  font-style: normal !important;
+  font-feature-settings: "tnum", "ss01", "cv11", "kern";
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  font-weight: 400;
+}
+
+/* English translation under Urdu: subdued, refined italic */
+.translation-en {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.005em;
+  color: #8a7a4d;
+  font-variation-settings: "opsz" 14, "SOFT" 50;
+}
+
 /* Custom Utilities */
 .glass {
   @apply bg-white/[0.03] backdrop-blur-3xl border border-white/10;
 }
 
 .gold-gradient {
-  background: linear-gradient(135deg, #b4a269 0%, #d4c491 50%, #b4a269 100%);
+  /* Dull antique gold with bronze undertone + animated shimmer */
+  background: linear-gradient(
+    100deg,
+    #4d3a1c 0%,
+    #6e5530 18%,
+    #8a6d3f 32%,
+    #b89b5e 46%,
+    #d6bd86 50%,
+    #b89b5e 54%,
+    #8a6d3f 68%,
+    #6e5530 82%,
+    #4d3a1c 100%
+  );
+  background-size: 240% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: bronze-shimmer 11s ease-in-out infinite;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,0.5))
+          drop-shadow(0 0 12px rgba(184,155,94,0.16));
   /* Prevent descender / Nastaliq glyph clipping when used as a heading */
   display: inline-block;
   padding-bottom: 0.4em;
   padding-top: 0.08em;
   line-height: 1.5;
+}
+
+/* Reusable utility for any element wanting the bronze shimmer */
+.bronze-shimmer-text {
+  background: linear-gradient(
+    100deg,
+    #4d3a1c 0%,
+    #6e5530 18%,
+    #8a6d3f 32%,
+    #b89b5e 46%,
+    #d6bd86 50%,
+    #b89b5e 54%,
+    #8a6d3f 68%,
+    #6e5530 82%,
+    #4d3a1c 100%
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: bronze-shimmer 11s ease-in-out infinite;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,0.5))
+          drop-shadow(0 0 12px rgba(184,155,94,0.16));
+}
+
+@keyframes bronze-shimmer {
+  0%   { background-position: 220% 50%; }
+  50%  { background-position: -20% 50%; }
+  100% { background-position: 220% 50%; }
 }
 
 .red-glow {
@@ -411,3 +505,81 @@
 .text-shadow-soft {
   text-shadow: 0 1px 30px rgba(0,0,0,0.6), 0 0 1px rgba(245,239,226,0.2);
 }
+
+/* ============================================================
+   SACRED ATMOSPHERE — cinematic background layer for sub-pages
+   ============================================================ */
+
+/* Slow rotating sacred geometry (8-pointed star tessellation) */
+@keyframes sacred-spin {
+  to { transform: rotate(360deg); }
+}
+.animate-sacred-spin { animation: sacred-spin 240s linear infinite; }
+.animate-sacred-spin-rev { animation: sacred-spin 320s linear infinite reverse; }
+
+/* Light ray sweep — diagonal beams of dust-light through arches */
+@keyframes ray-sweep {
+  0%   { opacity: 0;    transform: translateX(-30%) rotate(-18deg); }
+  20%  { opacity: 0.18; }
+  60%  { opacity: 0.22; }
+  100% { opacity: 0;    transform: translateX(40%)  rotate(-18deg); }
+}
+.animate-ray-sweep {
+  animation: ray-sweep 18s ease-in-out infinite;
+  transform-origin: top left;
+}
+.animate-ray-sweep-2 {
+  animation: ray-sweep 26s ease-in-out infinite;
+  animation-delay: -9s;
+  transform-origin: top left;
+}
+
+/* Mihrab arch breathe */
+@keyframes mihrab-breathe {
+  0%, 100% { opacity: 0.10; transform: translateY(0) scale(1); }
+  50%      { opacity: 0.18; transform: translateY(-8px) scale(1.012); }
+}
+.animate-mihrab { animation: mihrab-breathe 14s ease-in-out infinite; }
+
+/* Aurora wash — slow color drift behind content */
+@keyframes aurora-drift {
+  0%   { transform: translate3d(-6%, 2%, 0)  scale(1.05); }
+  33%  { transform: translate3d( 5%, -3%, 0) scale(1.10); }
+  66%  { transform: translate3d(-3%, -2%, 0) scale(1.08); }
+  100% { transform: translate3d(-6%, 2%, 0)  scale(1.05); }
+}
+.animate-aurora { animation: aurora-drift 38s ease-in-out infinite; }
+
+/* Calligraphic ornament pulse */
+@keyframes ornament-pulse {
+  0%, 100% { opacity: 0.35; filter: drop-shadow(0 0 8px rgba(212,190,134,0.25)); }
+  50%      { opacity: 0.75; filter: drop-shadow(0 0 18px rgba(240,223,176,0.55)); }
+}
+.animate-ornament-pulse { animation: ornament-pulse 6s ease-in-out infinite; }
+
+/* Top page reveal — gold curtain */
+@keyframes gold-curtain {
+  0%   { transform: scaleY(1); transform-origin: top; }
+  100% { transform: scaleY(0); transform-origin: top; }
+}
+.animate-gold-curtain { animation: gold-curtain 1.6s cubic-bezier(0.7, 0, 0.2, 1) forwards; }
+
+/* Hairline scroll rail glow */
+@keyframes rail-shimmer {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 0.95; }
+}
+.animate-rail-shimmer { animation: rail-shimmer 4s ease-in-out infinite; }
+
+/* Reduced motion: tone everything down */
+@media (prefers-reduced-motion: reduce) {
+  .animate-sacred-spin,
+  .animate-sacred-spin-rev,
+  .animate-ray-sweep,
+  .animate-ray-sweep-2,
+  .animate-mihrab,
+  .animate-aurora,
+  .animate-ornament-pulse,
+  .animate-rail-shimmer { animation: none !important; }
+}
+

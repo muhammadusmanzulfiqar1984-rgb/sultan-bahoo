@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Play, Pause, Search, Sparkles, Languages } from "lucide-react";
+import { cn } from "../lib/utils";
+import { SacredAtmosphere } from "../components/SacredAtmosphere";
+import { ScrollProgressOrnament } from "../components/ScrollProgressOrnament";
 
 const ABYAAT = [
   {
@@ -36,6 +39,15 @@ export function Kalam() {
 
   return (
     <div className="min-h-screen pt-40 pb-24 px-6 bg-sacred-black flex flex-col items-center relative overflow-hidden">
+      <SacredAtmosphere tone="crimson" embers={28} />
+      <ScrollProgressOrnament
+        glyph="ھُو"
+        sections={[
+          { urdu: "دیباچہ", label: "Prelude" },
+          { urdu: "ابیات", label: "Verses" },
+          { urdu: "تلاوت", label: "Recitation" },
+        ]}
+      />
       {/* Background Particles & Light */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[800px] h-[800px] bg-sacred-red/5 rounded-full blur-[150px]" />
