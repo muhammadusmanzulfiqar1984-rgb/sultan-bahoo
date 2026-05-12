@@ -29,6 +29,16 @@
   color: var(--color-ivory);
 }
 
+/* Body backdrop — a candlelit room, not a void.
+   Subtle warm glow rising from the bottom centre + soft top vignette. */
+body {
+  background-color: var(--color-sacred-black);
+  background-image:
+    radial-gradient(ellipse 90% 60% at 50% 110%, rgba(120, 70, 30, 0.35) 0%, rgba(80, 40, 20, 0.18) 25%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 50% 0%,  rgba(40, 25, 15, 0.4) 0%, transparent 60%);
+  background-attachment: fixed;
+}
+
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
@@ -580,6 +590,65 @@
   .animate-mihrab,
   .animate-aurora,
   .animate-ornament-pulse,
-  .animate-rail-shimmer { animation: none !important; }
+  .animate-rail-shimmer,
+  .animate-flame-flicker,
+  .animate-flame-glow,
+  .animate-chiragh-pool { animation: none !important; }
 }
+
+/* ============================================================
+   CHIRAGH — oil lamp flame & warm light pool
+   Two coupled animations that breathe/flicker out of phase to feel
+   organic and alive (like a real wick).
+   ============================================================ */
+
+/* Flame body: subtle scale + skew + brightness flicker */
+@keyframes flame-flicker {
+  0%   { transform: translate(-50%, 0) scale(1, 1)       skewX(0);   filter: brightness(1) hue-rotate(0); }
+  10%  { transform: translate(-50%, 0) scale(1.02, 0.98) skewX(-1deg); filter: brightness(1.08); }
+  22%  { transform: translate(-50%, 0) scale(0.97, 1.03) skewX(1deg);  filter: brightness(0.95); }
+  35%  { transform: translate(-50%, 0) scale(1.04, 1.01) skewX(-0.5deg); filter: brightness(1.12); }
+  48%  { transform: translate(-50%, 0) scale(0.99, 1.02) skewX(0.8deg); filter: brightness(0.98); }
+  62%  { transform: translate(-50%, 0) scale(1.03, 0.99) skewX(-0.7deg); filter: brightness(1.05); }
+  78%  { transform: translate(-50%, 0) scale(0.98, 1.02) skewX(0.6deg); filter: brightness(0.92); }
+  90%  { transform: translate(-50%, 0) scale(1.02, 1.00) skewX(0);    filter: brightness(1.06); }
+  100% { transform: translate(-50%, 0) scale(1, 1)       skewX(0);   filter: brightness(1); }
+}
+.animate-flame-flicker {
+  animation: flame-flicker 3.4s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+/* Halo right around the flame: opacity + scale dance */
+@keyframes flame-glow {
+  0%, 100% { opacity: 0.78; transform: translate(-50%, 0) scale(1); }
+  18%      { opacity: 0.95; transform: translate(-50%, 0) scale(1.06); }
+  40%      { opacity: 0.70; transform: translate(-50%, 0) scale(0.96); }
+  62%      { opacity: 0.92; transform: translate(-50%, 0) scale(1.04); }
+  82%      { opacity: 0.74; transform: translate(-50%, 0) scale(0.98); }
+}
+.animate-flame-glow {
+  animation: flame-glow 3.4s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+/* Big warm light pool that slowly breathes — soothing dim and glow */
+@keyframes chiragh-pool {
+  0%, 100% { opacity: 0.45; transform: translate(-50%, 0) scale(1);    }
+  25%      { opacity: 0.62; transform: translate(-50%, 0) scale(1.04); }
+  50%      { opacity: 0.55; transform: translate(-50%, 0) scale(1.02); }
+  75%      { opacity: 0.68; transform: translate(-50%, 0) scale(1.06); }
+}
+.animate-chiragh-pool {
+  animation: chiragh-pool 9s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+/* Page-wide ambient warm tint that pulses with the chiragh */
+@keyframes warm-tint-breathe {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 0.85; }
+}
+.animate-warm-tint { animation: warm-tint-breathe 9s ease-in-out infinite; }
+
 

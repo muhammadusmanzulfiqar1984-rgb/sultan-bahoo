@@ -12,6 +12,10 @@ interface SacredAtmosphereProps {
   geometry?: boolean;
   /** Number of drifting gold embers */
   embers?: number;
+  /** Show the burning oil-lamp (chiragh) anchored at bottom */
+  chiragh?: boolean;
+  /** Position of the chiragh: center, left, or right */
+  chiraghSide?: "center" | "left" | "right";
 }
 
 /**
@@ -32,6 +36,8 @@ export function SacredAtmosphere({
   mihrab = true,
   geometry = true,
   embers = 22,
+  chiragh = true,
+  chiraghSide = "center",
 }: SacredAtmosphereProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
 
@@ -185,6 +191,9 @@ export function SacredAtmosphere({
         />
       ))}
 
+      {/* Chiragh — burning oil lamp anchored at the bottom of the page */}
+      {chiragh && <Chiragh side={chiraghSide} />}
+
       {/* Top + bottom vignette */}
       <div
         className="absolute inset-x-0 top-0 h-[35vh]"
@@ -332,6 +341,152 @@ function EightPoint({
       <path d={square} transform="rotate(45)" />
       <circle r={r * 0.42} />
     </g>
+  );
+}
+
+/* ----------------------------------------------------------------
+   Chiragh — burning oil lamp anchored at the bottom of the viewport.
+   A traditional clay diya (دیا) silhouette with a flickering flame
+   and a wide, slowly-breathing warm light pool. Soothes "too dark"
+   pages with organic, candle-like motion.
+   ---------------------------------------------------------------- */
+function Chiragh({ side = "center" }: { side?: "center" | "left" | "right" }) {
+  const horizontal =
+    side === "left" ? "left-[12%]" : side === "right" ? "right-[12%]" : "left-1/2 -translate-x-1/2";
+
+  return (
+    <div className={`absolute bottom-0 ${horizontal} w-0`}>
+      {/* Massive warm light pool — illuminates the entire lower half */}
+      <div
+        className="absolute bottom-0 left-1/2 h-[100vh] w-[140vw] -translate-x-1/2 animate-chiragh-pool"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 100% at 50% 100%, rgba(255,170,80,0.22) 0%, rgba(232,125,60,0.14) 18%, rgba(180,80,40,0.08) 38%, rgba(107,15,26,0.04) 60%, transparent 80%)",
+          mixBlendMode: "screen",
+          filter: "blur(20px)",
+        }}
+      />
+
+      {/* Inner halo right around the wick — brighter, faster breathing */}
+      <div
+        className="absolute bottom-[110px] left-1/2 h-[60vh] w-[60vh] -translate-x-1/2 animate-flame-glow"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(255,210,140,0.55) 0%, rgba(255,160,70,0.30) 18%, rgba(232,125,60,0.14) 40%, transparent 70%)",
+          mixBlendMode: "screen",
+          filter: "blur(30px)",
+        }}
+      />
+
+      {/* The lamp + flame SVG */}
+      <svg
+        width="220"
+        height="200"
+        viewBox="0 0 220 200"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2"
+        style={{ overflow: "visible" }}
+      >
+        <defs>
+          <linearGradient id="lamp-body" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#3a2a16" />
+            <stop offset="55%" stopColor="#1c140a" />
+            <stop offset="100%" stopColor="#0a0604" />
+          </linearGradient>
+          <linearGradient id="lamp-rim" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#b89b5e" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="#6e5530" stopOpacity="0.4" />
+          </linearGradient>
+          <radialGradient id="flame-grad" cx="50%" cy="80%" r="60%">
+            <stop offset="0%" stopColor="#fff8e1" />
+            <stop offset="20%" stopColor="#ffd98a" />
+            <stop offset="50%" stopColor="#ff9a3c" />
+            <stop offset="80%" stopColor="#c2461d" />
+            <stop offset="100%" stopColor="#6b0f1a" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="flame-core" cx="50%" cy="85%" r="50%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="40%" stopColor="#fff2c8" />
+            <stop offset="100%" stopColor="#ffaa55" stopOpacity="0" />
+          </radialGradient>
+          <filter id="flame-blur">
+            <feGaussianBlur stdDeviation="1.4" />
+          </filter>
+        </defs>
+
+        {/* Drip tray base */}
+        <ellipse cx="110" cy="195" rx="95" ry="6" fill="rgba(0,0,0,0.55)" />
+
+        {/* Lamp body — traditional diya teardrop silhouette */}
+        <path
+          d="M 40 178
+             Q 30 168 32 158
+             Q 35 142 60 138
+             L 95 138
+             Q 110 110 130 138
+             L 165 138
+             Q 188 142 188 158
+             Q 188 172 178 180
+             Q 160 192 110 193
+             Q 60 192 40 178 Z"
+          fill="url(#lamp-body)"
+        />
+        {/* Rim highlight */}
+        <path
+          d="M 40 178
+             Q 30 168 32 158
+             Q 35 142 60 138
+             L 95 138
+             Q 110 110 130 138
+             L 165 138
+             Q 188 142 188 158"
+          fill="none"
+          stroke="url(#lamp-rim)"
+          strokeWidth="1.2"
+        />
+        {/* Tiny gold reflection on the spout */}
+        <path
+          d="M 100 130 Q 110 118 120 130"
+          fill="none"
+          stroke="#d6bd86"
+          strokeWidth="0.8"
+          opacity="0.6"
+        />
+
+        {/* Wick (small dark sliver under the flame) */}
+        <rect x="108" y="118" width="4" height="14" fill="#2a1a0a" />
+
+        {/* Outer flame body — flickers */}
+        <g className="animate-flame-flicker" style={{ transformBox: "fill-box" }}>
+          <path
+            d="M 110 122
+               C 96 100, 96 78, 110 50
+               C 124 78, 124 100, 110 122 Z"
+            fill="url(#flame-grad)"
+            filter="url(#flame-blur)"
+          />
+          {/* Bright inner core */}
+          <path
+            d="M 110 122
+               C 102 108, 102 92, 110 72
+               C 118 92, 118 108, 110 122 Z"
+            fill="url(#flame-core)"
+          />
+          {/* Hot white center */}
+          <ellipse cx="110" cy="112" rx="3" ry="9" fill="#fffceb" opacity="0.95" />
+        </g>
+      </svg>
+
+      {/* Page-wide warm tint that breathes with the flame */}
+      <div
+        className="fixed inset-0 animate-warm-tint"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255,150,70,0.06) 0%, transparent 60%)",
+          mixBlendMode: "screen",
+          pointerEvents: "none",
+        }}
+      />
+    </div>
   );
 }
 
