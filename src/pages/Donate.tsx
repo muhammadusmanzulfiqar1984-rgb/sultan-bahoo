@@ -24,7 +24,7 @@ export function Donate() {
       />
       <div className="max-w-7xl mx-auto relative z-10">
         <header className="mb-32 text-center relative">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-sacred-red/5 rounded-full blur-[120px] -z-10" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-sacred-red/5 rounded-full blur-[60px] -z-10" />
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5 }}>
             <span className="text-sacred-red uppercase text-[10px] tracking-[0.8em] mb-8 block font-bold">عملِ کرم · Act of Grace</span>
             <h1 className="font-nastaliq text-6xl md:text-[7rem] mb-4 gold-gradient leading-[1.3]" dir="rtl">حلقۂ رحمت</h1>

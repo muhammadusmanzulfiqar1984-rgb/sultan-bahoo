@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useRef, useMemo, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 
 type Tone = "gold" | "crimson" | "twilight";
@@ -35,11 +35,21 @@ export function SacredAtmosphere({
   tone = "gold",
   mihrab = true,
   geometry = true,
-  embers = 22,
+  embers = 12,
   chiragh = true,
   chiraghSide = "center",
 }: SacredAtmosphereProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
+
+  // Skip heavy effects on mobile / low-power devices
+  const [enabled, setEnabled] = useState(true);
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 768px), (prefers-reduced-motion: reduce)");
+    setEnabled(!mql.matches);
+    const onChange = () => setEnabled(!mql.matches);
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
 
   // Mouse-tracked aurora orb
   const mx = useMotionValue(0.5);
@@ -50,26 +60,47 @@ export function SacredAtmosphere({
   const orbY = useTransform(sy, (v) => `${v * 100}%`);
 
   useEffect(() => {
+    if (!enabled) return;
+    let frame = 0;
+    let nx = 0.5, ny = 0.35;
     const handle = (e: MouseEvent) => {
-      mx.set(e.clientX / window.innerWidth);
-      my.set(e.clientY / window.innerHeight);
+      nx = e.clientX / window.innerWidth;
+      ny = e.clientY / window.innerHeight;
+      if (!frame) {
+        frame = requestAnimationFrame(() => {
+          mx.set(nx);
+          my.set(ny);
+          frame = 0;
+        });
+      }
     };
     window.addEventListener("mousemove", handle, { passive: true });
-    return () => window.removeEventListener("mousemove", handle);
-  }, [mx, my]);
+    return () => {
+      window.removeEventListener("mousemove", handle);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [mx, my, enabled]);
 
-  // Parallax for mihrab arch on scroll
+  // Parallax for mihrab arch on scroll — rAF throttled
   useEffect(() => {
+    if (!enabled) return;
     const el = wrapRef.current;
     if (!el) return;
+    let frame = 0;
     const onScroll = () => {
-      const y = window.scrollY;
-      el.style.setProperty("--scroll-y", `${y}px`);
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        el.style.setProperty("--scroll-y", `${window.scrollY}px`);
+        frame = 0;
+      });
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [enabled]);
 
   // Pre-compute ember properties so they don't shuffle on each render
   const emberSeeds = useMemo(
@@ -99,30 +130,32 @@ export function SacredAtmosphere({
         ["--scroll-y" as never]: "0px",
       }}
     >
-      {/* Base aurora wash — two enormous color blobs drifting */}
-      <motion.div
-        className="absolute -top-1/3 -left-1/4 h-[140vh] w-[140vh] rounded-full blur-[160px] animate-aurora"
+      {/* Base aurora wash — plain divs (CSS animation only, no JS engine cost) */}
+      <div
+        className="absolute -top-1/3 -left-1/4 h-[80vh] w-[80vh] rounded-full blur-[80px] animate-aurora will-change-transform"
         style={{ background: palette.auroraA }}
       />
-      <motion.div
-        className="absolute -bottom-1/3 -right-1/4 h-[120vh] w-[120vh] rounded-full blur-[180px] animate-aurora"
+      <div
+        className="absolute -bottom-1/3 -right-1/4 h-[70vh] w-[70vh] rounded-full blur-[80px] animate-aurora will-change-transform"
         style={{ background: palette.auroraB, animationDelay: "-12s" }}
       />
 
-      {/* Mouse-tracked gold orb — feels alive, follows cursor with spring */}
-      <motion.div
-        className="absolute h-[55vh] w-[55vh] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px]"
-        style={{
-          left: orbX,
-          top: orbY,
-          background: palette.cursorOrb,
-        }}
-      />
+      {/* Mouse-tracked gold orb — desktop only */}
+      {enabled && (
+        <motion.div
+          className="absolute h-[40vh] w-[40vh] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[60px] will-change-transform"
+          style={{
+            left: orbX,
+            top: orbY,
+            background: palette.cursorOrb,
+          }}
+        />
+      )}
 
       {/* Mihrab arch silhouette — parallax background "shrine" */}
       {mihrab && (
         <div
-          className="absolute left-1/2 top-[8vh] -translate-x-1/2 animate-mihrab"
+          className="absolute left-1/2 top-[8vh] -translate-x-1/2 animate-mihrab will-change-transform"
           style={{
             transform: `translate(-50%, calc(8vh - var(--scroll-y) * 0.18))`,
           }}
@@ -131,42 +164,38 @@ export function SacredAtmosphere({
         </div>
       )}
 
-      {/* Rotating sacred-geometry seal — large faint tessellation */}
-      {geometry && (
-        <>
-          <div
-            className="absolute left-1/2 top-1/2 h-[180vh] w-[180vh] -translate-x-1/2 -translate-y-1/2 animate-sacred-spin opacity-[0.08]"
-            style={{
-              transform: `translate(-50%, calc(-50% + var(--scroll-y) * 0.04px))`,
-            }}
-          >
-            <SacredSeal />
-          </div>
-          <div className="absolute left-1/2 top-1/2 h-[110vh] w-[110vh] -translate-x-1/2 -translate-y-1/2 animate-sacred-spin-rev opacity-[0.06]">
-            <SacredSeal inner />
-          </div>
-        </>
+      {/* Single rotating sacred-geometry seal (was two — too expensive) */}
+      {geometry && enabled && (
+        <div
+          className="absolute left-1/2 top-1/2 h-[100vh] w-[100vh] -translate-x-1/2 -translate-y-1/2 animate-sacred-spin opacity-[0.07] will-change-transform"
+        >
+          <SacredSeal />
+        </div>
       )}
 
-      {/* Diagonal light rays — sweep slowly across the viewport */}
-      <div
-        className="absolute -top-[10%] left-0 h-[140%] w-[60%] animate-ray-sweep"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent 0%, rgba(240,223,176,0.06) 40%, rgba(255,235,180,0.10) 50%, rgba(240,223,176,0.06) 60%, transparent 100%)",
-          filter: "blur(8px)",
-          mixBlendMode: "screen",
-        }}
-      />
-      <div
-        className="absolute -top-[10%] left-[25%] h-[140%] w-[40%] animate-ray-sweep-2"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent 0%, rgba(232,125,60,0.05) 50%, transparent 100%)",
-          filter: "blur(12px)",
-          mixBlendMode: "screen",
-        }}
-      />
+      {/* Diagonal light rays — desktop only, smaller blur */}
+      {enabled && (
+        <>
+          <div
+            className="absolute -top-[10%] left-0 h-[140%] w-[60%] animate-ray-sweep will-change-transform"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent 0%, rgba(240,223,176,0.06) 40%, rgba(255,235,180,0.10) 50%, rgba(240,223,176,0.06) 60%, transparent 100%)",
+              filter: "blur(4px)",
+              mixBlendMode: "screen",
+            }}
+          />
+          <div
+            className="absolute -top-[10%] left-[25%] h-[140%] w-[40%] animate-ray-sweep-2 will-change-transform"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent 0%, rgba(232,125,60,0.05) 50%, transparent 100%)",
+              filter: "blur(6px)",
+              mixBlendMode: "screen",
+            }}
+          />
+        </>
+      )}
 
       {/* Drifting gold embers */}
       {emberSeeds.map((e) => (
@@ -281,10 +310,10 @@ function MihrabArch() {
 }
 
 function SacredSeal({ inner = false }: { inner?: boolean }) {
-  // Tessellation of 8-pointed stars on a hex-ish grid
+  // Tessellation of 8-pointed stars on a hex-ish grid (reduced for perf)
   const points: Array<[number, number]> = [];
-  const cols = inner ? 5 : 7;
-  const rows = inner ? 5 : 7;
+  const cols = inner ? 3 : 4;
+  const rows = inner ? 3 : 4;
   const step = 200;
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {

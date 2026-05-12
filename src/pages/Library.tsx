@@ -72,7 +72,7 @@ export function Library() {
       />
       <div className="max-w-7xl mx-auto relative z-10">
         <header className="mb-32 text-center relative">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gold-antique/5 rounded-full blur-[120px] -z-10" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gold-antique/5 rounded-full blur-[60px] -z-10" />
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}

@@ -29,14 +29,13 @@
   color: var(--color-ivory);
 }
 
-/* Body backdrop — a candlelit room, not a void.
-   Subtle warm glow rising from the bottom centre + soft top vignette. */
+/* Body backdrop — single warm radial. No background-attachment: fixed
+   (causes GPU repaints on scroll). The chiragh + atmosphere handle the
+   dynamic candlelit feel; this is just a static base wash. */
 body {
   background-color: var(--color-sacred-black);
   background-image:
-    radial-gradient(ellipse 90% 60% at 50% 110%, rgba(120, 70, 30, 0.35) 0%, rgba(80, 40, 20, 0.18) 25%, transparent 55%),
-    radial-gradient(ellipse 60% 40% at 50% 0%,  rgba(40, 25, 15, 0.4) 0%, transparent 60%);
-  background-attachment: fixed;
+    radial-gradient(ellipse 90% 60% at 50% 110%, rgba(120, 70, 30, 0.32) 0%, rgba(80, 40, 20, 0.16) 25%, transparent 55%);
 }
 
 @layer base {
@@ -84,31 +83,32 @@ body {
 
   /* Display-tier headlines (h1, h2): dull antique gold + bronze layered shimmer */
   h1, h2 {
-    /* Layer 1 — base bronze gradient (rich, oxidized) */
-    background:
+    /* Base: layered bronze with a clearly visible champagne highlight band */
+    background-image:
       linear-gradient(
         100deg,
-        #4d3a1c 0%,
-        #6e5530 18%,
-        #8a6d3f 32%,
-        #b89b5e 46%,
-        #d6bd86 50%,    /* highlight pinch */
-        #b89b5e 54%,
-        #8a6d3f 68%,
-        #6e5530 82%,
-        #4d3a1c 100%
+        #3a2a14 0%,
+        #5a4422 14%,
+        #8a6d3f 28%,
+        #b89b5e 42%,
+        #e8cd92 49%,   /* bright highlight pinch */
+        #fff1c2 51%,   /* hot core sliver */
+        #e8cd92 53%,
+        #b89b5e 60%,
+        #8a6d3f 74%,
+        #5a4422 86%,
+        #3a2a14 100%
       );
-    background-size: 240% 100%;
+    background-size: 320% 100%;
+    background-repeat: no-repeat;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
-    /* dual-axis shimmer + breathing glow handled in keyframes */
-    animation: bronze-shimmer 11s ease-in-out infinite;
+    animation: bronze-shimmer 7s ease-in-out infinite;
     padding-bottom: 0.18em;
-    text-shadow: 0 0 0 transparent; /* reset — glow added below via filter */
     filter: drop-shadow(0 1px 0 rgba(0,0,0,0.55))
-            drop-shadow(0 0 14px rgba(184,155,94,0.18));
+            drop-shadow(0 0 18px rgba(216,189,134,0.22));
   }
   h1 { letter-spacing: -0.034em; font-weight: 250; }
   h2 { letter-spacing: -0.030em; font-weight: 280; }
@@ -191,28 +191,29 @@ body {
 }
 
 .gold-gradient {
-  /* Dull antique gold with bronze undertone + animated shimmer */
-  background: linear-gradient(
+  background-image: linear-gradient(
     100deg,
-    #4d3a1c 0%,
-    #6e5530 18%,
-    #8a6d3f 32%,
-    #b89b5e 46%,
-    #d6bd86 50%,
-    #b89b5e 54%,
-    #8a6d3f 68%,
-    #6e5530 82%,
-    #4d3a1c 100%
+    #3a2a14 0%,
+    #5a4422 14%,
+    #8a6d3f 28%,
+    #b89b5e 42%,
+    #e8cd92 49%,
+    #fff1c2 51%,
+    #e8cd92 53%,
+    #b89b5e 60%,
+    #8a6d3f 74%,
+    #5a4422 86%,
+    #3a2a14 100%
   );
-  background-size: 240% 100%;
+  background-size: 320% 100%;
+  background-repeat: no-repeat;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  animation: bronze-shimmer 11s ease-in-out infinite;
+  animation: bronze-shimmer 7s ease-in-out infinite;
   filter: drop-shadow(0 1px 0 rgba(0,0,0,0.5))
-          drop-shadow(0 0 12px rgba(184,155,94,0.16));
-  /* Prevent descender / Nastaliq glyph clipping when used as a heading */
+          drop-shadow(0 0 16px rgba(216,189,134,0.22));
   display: inline-block;
   padding-bottom: 0.4em;
   padding-top: 0.08em;
@@ -221,32 +222,34 @@ body {
 
 /* Reusable utility for any element wanting the bronze shimmer */
 .bronze-shimmer-text {
-  background: linear-gradient(
+  background-image: linear-gradient(
     100deg,
-    #4d3a1c 0%,
-    #6e5530 18%,
-    #8a6d3f 32%,
-    #b89b5e 46%,
-    #d6bd86 50%,
-    #b89b5e 54%,
-    #8a6d3f 68%,
-    #6e5530 82%,
-    #4d3a1c 100%
+    #3a2a14 0%,
+    #5a4422 14%,
+    #8a6d3f 28%,
+    #b89b5e 42%,
+    #e8cd92 49%,
+    #fff1c2 51%,
+    #e8cd92 53%,
+    #b89b5e 60%,
+    #8a6d3f 74%,
+    #5a4422 86%,
+    #3a2a14 100%
   );
-  background-size: 240% 100%;
+  background-size: 320% 100%;
+  background-repeat: no-repeat;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  animation: bronze-shimmer 11s ease-in-out infinite;
+  animation: bronze-shimmer 7s ease-in-out infinite;
   filter: drop-shadow(0 1px 0 rgba(0,0,0,0.5))
-          drop-shadow(0 0 12px rgba(184,155,94,0.16));
+          drop-shadow(0 0 16px rgba(216,189,134,0.22));
 }
 
 @keyframes bronze-shimmer {
-  0%   { background-position: 220% 50%; }
-  50%  { background-position: -20% 50%; }
-  100% { background-position: 220% 50%; }
+  0%   { background-position: 280% 50%; }
+  100% { background-position: -80% 50%; }
 }
 
 .red-glow {

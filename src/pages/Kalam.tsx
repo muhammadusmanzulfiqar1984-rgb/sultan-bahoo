@@ -48,19 +48,10 @@ export function Kalam() {
           { urdu: "تلاوت", label: "Recitation" },
         ]}
       />
-      {/* Background Particles & Light */}
+      {/* Background Light (atmosphere already covers particles) */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[800px] h-[800px] bg-sacred-red/5 rounded-full blur-[150px]" />
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-gold-antique/5 rounded-full blur-[120px]" />
-        {[...Array(30)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: Math.random() * 100 + "%", y: Math.random() * 100 + "%" }}
-            animate={{ y: [null, "-30px", "30px"], opacity: [0, 0.3, 0] }}
-            transition={{ duration: 5 + Math.random() * 5, repeat: Infinity, delay: Math.random() * 5 }}
-            className="absolute w-1 h-1 bg-gold-antique/40 rounded-full blur-[1px]"
-          />
-        ))}
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-sacred-red/5 rounded-full blur-[80px]" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gold-antique/5 rounded-full blur-[60px]" />
       </div>
 
       <div className="max-w-7xl w-full z-10">

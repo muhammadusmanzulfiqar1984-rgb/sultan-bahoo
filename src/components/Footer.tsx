@@ -5,7 +5,7 @@ export function Footer() {
   return (
     <footer className="bg-sacred-black pt-32 pb-16 px-6 relative overflow-hidden">
       {/* Footer Ambient Glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-sacred-red/5 rounded-full blur-[150px] -z-10" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-sacred-red/5 rounded-full blur-[80px] -z-10" />
 
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-24 mb-32">

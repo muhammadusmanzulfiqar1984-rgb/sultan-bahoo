@@ -25,8 +25,8 @@ export function About() {
         ]}
       />
       {/* Background Ambience */}
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-sacred-red/5 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gold-antique/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sacred-red/5 rounded-full blur-[80px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gold-antique/5 rounded-full blur-[60px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <header className="mb-32 text-center">
@@ -128,7 +128,7 @@ export function About() {
 
         {/* Sacred Lineage */}
         <section className="py-40 relative">
-          <div className="absolute inset-0 bg-sacred-red/[0.02] blur-[100px] pointer-events-none" />
+          <div className="absolute inset-0 bg-sacred-red/[0.02] blur-[60px] pointer-events-none" />
           <div className="text-center relative z-10">
             <h2 className="font-nastaliq text-5xl md:text-6xl gold-gradient leading-[1.4]" dir="rtl">سلسلۂ زرّیں</h2>
             <h3 className="text-2xl md:text-3xl font-serif italic gold-gradient mt-2 mb-12">The Golden Chain</h3>
